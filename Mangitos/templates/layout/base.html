@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Mango{% endblock %}</title>
+    <style>
+        :root {
+            --zapote: #d4623a;
+            --zapote-oscuro: #a8431f;
+            --mango: #f4b942;
+            --hoja: #8fbf5a;
+            --crema: #faf5ef;
+            --tinta: #2b1d16;
+            --suave: #8a7568;
+            --linea: #eadfd3;
+            --mx: 0;
+            --my: 0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--crema);
+            color: var(--tinta);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-x: hidden;
+        }
+
+        .fondo {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .orbe {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            translate: calc(var(--mx) * var(--k) * 1px) calc(var(--my) * var(--k) * 1px);
+            animation: flotar 18s ease-in-out infinite alternate;
+        }
+
+        .o1 {
+            --k: 40;
+            width: 420px;
+            height: 420px;
+            top: -120px;
+            left: -120px;
+            background: rgba(212, 98, 58, 0.30);
+        }
+
+        .o2 {
+            --k: -30;
+            width: 380px;
+            height: 380px;
+            bottom: -140px;
+            right: -100px;
+            background: rgba(244, 185, 66, 0.35);
+            animation-duration: 22s;
+        }
+
+        .o3 {
+            --k: 22;
+            width: 300px;
+            height: 300px;
+            top: 40%;
+            right: 12%;
+            background: rgba(143, 191, 90, 0.25);
+            animation-duration: 26s;
+        }
+
+        @keyframes flotar {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(40px, 30px) scale(1.12); }
+        }
+
+        .bola {
+            position: absolute;
+            bottom: -80px;
+            left: var(--x);
+            width: var(--s);
+            height: var(--s);
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), var(--c) 70%);
+            border: 1px solid rgba(212, 98, 58, 0.18);
+            pointer-events: auto;
+            cursor: pointer;
+            transition: scale 0.3s ease-out, opacity 0.3s ease-out;
+            animation: subir var(--t) linear var(--d) infinite;
+        }
+
+        .bola.explota {
+            scale: 1.8;
+            opacity: 0;
+            animation-play-state: paused;
+        }
+
+        @keyframes subir {
+            from { transform: translate(0, 0); }
+            50% { transform: translate(18px, -60vh); }
+            to { transform: translate(-10px, -120vh); }
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            animation: aparecer 0.6s ease both;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: var(--zapote);
+        }
+
+        .sub {
+            margin-top: 8px;
+            color: var(--suave);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .pie {
+            position: relative;
+            z-index: 1;
+            margin-top: 40px;
+            font-size: 12px;
+            color: var(--suave);
+            text-align: center;
+        }
+
+        .boton {
+            display: block;
+            width: 100%;
+            background: var(--zapote);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .boton:hover {
+            background: var(--zapote-oscuro);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(212, 98, 58, 0.30);
+        }
+
+        .boton:active { transform: translateY(0); box-shadow: none; }
+
+        .flecha {
+            display: inline-block;
+            margin-left: 6px;
+            transition: transform 0.2s;
+        }
+
+        .boton:hover .flecha { transform: translateX(5px); }
+
+        .volver {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: var(--suave);
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .volver:hover { color: var(--zapote); }
+
+        .firma {
+            font-size: 13px;
+            color: var(--suave);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .home h1 { font-size: 46px; margin-top: 8px; letter-spacing: -1.5px; }
+
+        .mango-hero {
+            display: block;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 10px;
+            filter: drop-shadow(0 14px 18px rgba(168, 67, 31, 0.25));
+            animation: mecer 5s ease-in-out infinite;
+        }
+
+        @keyframes mecer {
+            0%, 100% { transform: translateY(0) rotate(-4deg); }
+            50% { transform: translateY(-8px) rotate(4deg); }
+        }
+
+        .mango-mini {
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 6px;
+            filter: drop-shadow(0 6px 8px rgba(168, 67, 31, 0.2));
+        }
+
+        .mango-UnRipe { --m1: #c4dc7a; --m2: #6fa043; --verde: 0; }
+        .mango-Ripe { --m1: #f6c453; --m2: #e8743b; --verde: 0.15; }
+        .mango-OverRipe { --m1: #c98a4b; --m2: #7a4a2a; --verde: 0; }
+
+        .clases {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 26px;
+        }
+
+        .chip {
+            border: 1px solid var(--linea);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--suave);
+        }
+
+        .pasos { margin-top: 30px; text-align: left; }
+
+        .paso {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-top: 12px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--linea);
+            border-radius: 16px;
+            backdrop-filter: blur(6px);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .paso:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(168, 67, 31, 0.10);
+        }
+
+        .num {
+            flex: 0 0 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--zapote);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .paso h3 { font-size: 16px; font-weight: 600; }
+        .paso p { font-size: 14px; color: var(--suave); margin-top: 2px; line-height: 1.5; }
+
+        .grande { margin-top: 32px; padding: 20px; font-size: 18px; }
+
+        form { margin-top: 30px; }
+        form .boton { margin-top: 20px; }
+
+        .zona {
+            display: block;
+            border: 1.5px dashed var(--linea);
+            border-radius: 20px;
+            padding: 36px 20px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.2s;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(6px);
+            overflow: hidden;
+        }
+
+        .zona:hover {
+            border-color: var(--zapote);
+            background: rgba(255, 250, 246, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .zona span { color: var(--suave); font-size: 15px; }
+
+        .zona img {
+            display: none;
+            max-width: 100%;
+            max-height: 260px;
+            border-radius: 12px;
+            margin: 0 auto;
+        }
+
+        .zona.con-imagen img { display: block; }
+        .zona.con-imagen span { display: none; }
+
+        input[type=file] { display: none; }
+
+        .error {
+            margin-top: 20px;
+            color: var(--zapote-oscuro);
+            font-size: 14px;
+        }
+
+        .resultado {
+            margin-top: 36px;
+            padding-top: 28px;
+            border-top: 1px solid var(--linea);
+            animation: aparecer 0.6s ease both;
+        }
+
+        .etiqueta {
+            font-size: 13px;
+            color: var(--suave);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .clase {
+            font-size: 44px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            color: var(--zapote);
+            margin-top: 6px;
+        }
+
+        .confianza {
+            color: var(--suave);
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        .fila {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .fila .nombre { width: 90px; color: var(--tinta); }
+        .fila .valor { width: 50px; text-align: right; color: var(--suave); }
+
+        .barra {
+            flex: 1;
+            height: 6px;
+            background: var(--linea);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .barra div {
+            height: 100%;
+            width: 0;
+            background: var(--zapote);
+            border-radius: 3px;
+            transition: width 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fondo">
+        <div class="orbe o1"></div>
+        <div class="orbe o2"></div>
+        <div class="orbe o3"></div>
+
+        <span class="bola" style="--x: 6%; --s: 30px; --t: 17s; --d: -2s; --c: rgba(212, 98, 58, 0.22)"></span>
+        <span class="bola" style="--x: 14%; --s: 18px; --t: 13s; --d: -9s; --c: rgba(244, 185, 66, 0.35)"></span>
+        <span class="bola" style="--x: 24%; --s: 46px; --t: 21s; --d: -14s; --c: rgba(143, 191, 90, 0.28)"></span>
+        <span class="bola" style="--x: 38%; --s: 22px; --t: 15s; --d: -5s; --c: rgba(212, 98, 58, 0.22)"></span>
+        <span class="bola" style="--x: 55%; --s: 36px; --t: 19s; --d: -11s; --c: rgba(244, 185, 66, 0.35)"></span>
+        <span class="bola" style="--x: 68%; --s: 16px; --t: 12s; --d: -7s; --c: rgba(143, 191, 90, 0.28)"></span>
+        <span class="bola" style="--x: 78%; --s: 42px; --t: 23s; --d: -17s; --c: rgba(212, 98, 58, 0.22)"></span>
+        <span class="bola" style="--x: 88%; --s: 26px; --t: 16s; --d: -1s; --c: rgba(244, 185, 66, 0.35)"></span>
+        <span class="bola" style="--x: 95%; --s: 20px; --t: 14s; --d: -10s; --c: rgba(143, 191, 90, 0.28)"></span>
+    </div>
+
+    <main>
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <p class="pie">Proyecto académico de inteligencia artificial. Las predicciones pueden contener errores.</p>
+
+    <script>
+        window.addEventListener("mousemove", e => {
+            const x = e.clientX / window.innerWidth - 0.5;
+            const y = e.clientY / window.innerHeight - 0.5;
+            document.documentElement.style.setProperty("--mx", x);
+            document.documentElement.style.setProperty("--my", y);
+        });
+
+        document.querySelectorAll(".bola").forEach(bola => {
+            bola.addEventListener("click", () => {
+                bola.classList.add("explota");
+                setTimeout(() => {
+                    bola.style.animation = "none";
+                    bola.offsetHeight;
+                    bola.style.animation = "";
+                    bola.classList.remove("explota");
+                }, 350);
+            });
+        });
+    </script>
+
+    {% block script %}{% endblock %}
+</body>
+</html>

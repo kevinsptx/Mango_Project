@@ -1,0 +1,77 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Mango · Predecir{% endblock %}
+
+{% block contenido %}
+<a class="volver" href="{% url 'home' %}">← Inicio</a>
+{% if resultado %}
+    {% include "mango_svg.html" with clase="mango-mini mango-"|add:resultado.clave %}
+{% else %}
+    {% include "mango_svg.html" with clase="mango-mini" %}
+{% endif %}
+
+<h1>Predecir</h1>
+<p class="sub">Sube la foto de tu mango para conocer su estado de madurez.</p>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label class="zona{% if imagen_b64 %} con-imagen{% endif %}" id="zona" for="imagen">
+        <img id="vista" alt="Mango"{% if imagen_b64 %} src="data:{{ tipo_imagen }};base64,{{ imagen_b64 }}"{% endif %}>
+        <span>Toca para elegir una foto</span>
+    </label>
+    <input type="file" id="imagen" name="imagen" accept="image/*" required>
+
+    <button type="submit" class="boton">Analizar</button>
+</form>
+
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+
+{% if aviso %}
+    <p class="error">{{ aviso }}</p>
+{% endif %}
+
+{% if resultado %}
+    <section class="resultado">
+        <p class="etiqueta">Estado</p>
+        <p class="clase">{{ resultado.clase }}</p>
+        <p class="confianza">{{ resultado.confianza }}% de confianza</p>
+
+        {% for p in resultado.probabilidades %}
+            <div class="fila">
+                <span class="nombre">{{ p.nombre }}</span>
+                <div class="barra"><div data-valor="{{ p.valor }}"></div></div>
+                <span class="valor">{{ p.valor }}%</span>
+            </div>
+        {% endfor %}
+    </section>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+    const input = document.getElementById("imagen");
+    const vista = document.getElementById("vista");
+    const zona = document.getElementById("zona");
+
+    input.addEventListener("change", () => {
+        const archivo = input.files[0];
+        if (!archivo) return;
+        vista.src = URL.createObjectURL(archivo);
+        zona.classList.add("con-imagen");
+    });
+
+    setTimeout(() => {
+        document.querySelectorAll("[data-valor]").forEach(el => {
+            const valor = parseFloat(el.dataset.valor.replace(",", "."));
+            el.style.width = valor + "%";
+        });
+    }, 150);
+</script>
+{% endblock %}

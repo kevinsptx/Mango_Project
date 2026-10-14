@@ -1,0 +1,8 @@
+Django
+tensorflow-cpu
+numpy
+pandas
+scikit-learn
+matplotlib
+pillow
+jupyter

@@ -1,0 +1,45 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Mango · Inicio{% endblock %}
+
+{% block contenido %}
+<div class="home">
+    {% include "mango_svg.html" with clase="mango-hero" %}
+
+    <p class="firma">Proyecto de Kevin Santiago</p>
+    <h1>Mango</h1>
+    <p class="sub">Descubre en qué punto de madurez está tu mango con ayuda de una red neuronal.</p>
+
+    <div class="clases">
+        <span class="chip">Verde</span>
+        <span class="chip">Maduro</span>
+        <span class="chip">Sobremaduro</span>
+    </div>
+
+    <div class="pasos">
+        <div class="paso">
+            <div class="num">1</div>
+            <div>
+                <h3>Sube una foto</h3>
+                <p>Elige una imagen clara de tu mango, bien iluminada y con fondo limpio.</p>
+            </div>
+        </div>
+        <div class="paso">
+            <div class="num">2</div>
+            <div>
+                <h3>La red la analiza</h3>
+                <p>Un modelo de visión por computador, entrenado con 975 fotos de mangos, estudia la imagen.</p>
+            </div>
+        </div>
+        <div class="paso">
+            <div class="num">3</div>
+            <div>
+                <h3>Recibes el resultado</h3>
+                <p>Verde, maduro o sobremaduro, con el porcentaje de confianza de cada estado.</p>
+            </div>
+        </div>
+    </div>
+
+    <a class="boton grande" href="{% url 'predecir' %}">Ir a predecir<span class="flecha">→</span></a>
+</div>
+{% endblock %}
